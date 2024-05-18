@@ -19,8 +19,8 @@ namespace DiplomadoEjercicio3.Controllers
         public List<Clientes> Get()
         {
             List<Clientes> clientes = 
-                contexto.Clientes.
-                Where(x=>x.ClienteNombre.StartsWith("L"))
+                contexto.Clientes
+                //.Where(x=>x.ClienteNombre.StartsWith("L"))
                 .OrderBy(x=>x.ClienteNombre).ToList();
             return clientes;
         }
@@ -32,8 +32,10 @@ namespace DiplomadoEjercicio3.Controllers
         }
 
         // POST api/<controller>
-        public void Post([FromBody] string value)
+        public void Post(Clientes value)
         {
+            contexto.Clientes.Add(value);
+            contexto.SaveChanges();
         }
 
         // PUT api/<controller>/5

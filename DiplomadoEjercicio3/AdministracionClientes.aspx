@@ -58,15 +58,37 @@
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Modal title</h5>
+                        <h5 class="modal-title">Cliente</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <div class="modal-body">
-                        <p>Modal body text goes here.</p>
+                        <div class="row">
+                            <div class="col-md-12">
+                                <label>Nombre del Cliente</label>
+                                <input id="ClienteNombre" type="text"
+                                    class="form-control" required/>
+                            </div>
+                        </div>
+                         <div class="row">
+                             <div class="col-md-12">
+                                <label>Teléfono del Cliente</label>
+                                <input id="ClienteTelefono" type="text"
+                                    class="form-control" required/>
+                            </div>
+                        </div>
+                        <div class="row">
+                             <div class="col-md-12">
+                                <label>Dirección del Cliente</label>
+                                <input id="ClienteDireccion" type="text"
+                                    class="form-control" required/>
+                            </div>
+                        </div>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                        <button type="button" 
+                            onclick="GuardarCliente();" 
+                            class="btn btn-primary">Guardar</button>
                     </div>
                 </div>
             </div>
@@ -85,6 +107,7 @@
         function DevolverClientes() {
             $.getJSON(uri).done(function (data) {
                 console.log(data);
+                $("#listadoClientes").empty();
                 $.each(data, function (index, value) {
                     let row = "<td>" + value.ClienteId + "</td>" +
                         "<td>" + value.ClienteNombre + "</td>" +
@@ -103,6 +126,33 @@
 
         function LanzarModal() {
             $("#ClienteModal").modal('show');
+        }
+
+        function GuardarCliente() {
+            var cliente = ObtenerCliente();
+            $.ajax({
+                url: uri,
+                type: "POST",
+                data: cliente,
+                dataType: "json",
+                success: function (data, textStatus, xhr) {
+                    console.log("El cliente se agrego exitosamente");
+                    DevolverClientes();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("Ha ocurrido un error en el grabado del cliente");
+                }
+            });
+            $("#ClienteModal").modal('hide');
+        }
+
+        function ObtenerCliente() {
+            var cliente = new Object();
+            cliente.ClienteNombre = $("#ClienteNombre").val();
+            cliente.ClienteTelefono = $("#ClienteTelefono").val();
+            cliente.ClienteDireccion = $("#ClienteDireccion").val();
+            console.log(cliente);
+            return cliente;
         }
     </script>
 </body>
