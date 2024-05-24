@@ -10,3 +10,15 @@ C:\Users\juanc\source\repos\DiplomadoEjercicio3\Model\obj\Debug\Model.csproj.Cor
 C:\Users\juanc\source\repos\DiplomadoEjercicio3\Model\obj\Debug\Model.csproj.CopyComplete
 C:\Users\juanc\source\repos\DiplomadoEjercicio3\Model\obj\Debug\Model.dll
 C:\Users\juanc\source\repos\DiplomadoEjercicio3\Model\obj\Debug\Model.pdb
+E:\DiplomadoEjercicio3\Model\bin\Debug\Model.dll.config
+E:\DiplomadoEjercicio3\Model\bin\Debug\Model.dll
+E:\DiplomadoEjercicio3\Model\bin\Debug\Model.pdb
+E:\DiplomadoEjercicio3\Model\bin\Debug\EntityFramework.dll
+E:\DiplomadoEjercicio3\Model\bin\Debug\EntityFramework.SqlServer.dll
+E:\DiplomadoEjercicio3\Model\bin\Debug\EntityFramework.xml
+E:\DiplomadoEjercicio3\Model\bin\Debug\EntityFramework.SqlServer.xml
+E:\DiplomadoEjercicio3\Model\obj\Debug\Model.csproj.AssemblyReference.cache
+E:\DiplomadoEjercicio3\Model\obj\Debug\Model.csproj.CoreCompileInputs.cache
+E:\DiplomadoEjercicio3\Model\obj\Debug\Model.csproj.CopyComplete
+E:\DiplomadoEjercicio3\Model\obj\Debug\Model.dll
+E:\DiplomadoEjercicio3\Model\obj\Debug\Model.pdb

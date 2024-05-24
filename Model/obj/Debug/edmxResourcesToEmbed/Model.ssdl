@@ -9,7 +9,16 @@
     <Property Name="ClienteTelefono" Type="nvarchar" MaxLength="150" Nullable="false" />
     <Property Name="ClienteDireccion" Type="nvarchar" MaxLength="150" Nullable="false" />
   </EntityType>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="UsuarioId" />
+    </Key>
+    <Property Name="UsuarioId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="UsuarioNombre" Type="nvarchar" MaxLength="50" />
+    <Property Name="UsuarioContraseña" Type="nvarchar" MaxLength="50" />
+  </EntityType>
   <EntityContainer Name="DemoModelStoreContainer">
     <EntitySet Name="Clientes" EntityType="Self.Clientes" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="Usuarios" EntityType="Self.Usuarios" Schema="dbo" store:Type="Tables" />
   </EntityContainer>
 </Schema>

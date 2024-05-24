@@ -26,9 +26,9 @@ namespace DiplomadoEjercicio3.Controllers
         }
 
         // GET api/<controller>/5
-        public string Get(int id)
+        public Clientes Get(int id)
         {
-            return "value";
+            return contexto.Clientes.Find(id);
         }
 
         // POST api/<controller>
@@ -39,13 +39,20 @@ namespace DiplomadoEjercicio3.Controllers
         }
 
         // PUT api/<controller>/5
-        public void Put(int id, [FromBody] string value)
+        public void Put(Clientes value)
         {
+            Clientes pasado = contexto.Clientes.Find(value.ClienteId);
+            contexto.Entry(pasado).CurrentValues.SetValues(value);
+            contexto.SaveChanges();
+
         }
 
         // DELETE api/<controller>/5
-        public void Delete(int id)
+        public void Delete(int ClienteId)
         {
+            Clientes cliente = contexto.Clientes.Find(ClienteId);
+            contexto.Clientes.Remove(cliente);
+            contexto.SaveChanges();
         }
     }
 }

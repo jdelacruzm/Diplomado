@@ -1,7 +1,5 @@
 ﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="AdministracionClientes.aspx.cs" Inherits="DiplomadoEjercicio3.AdministracionClientes" %>
-
 <!DOCTYPE html>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head runat="server">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -17,7 +15,7 @@
 </head>
 <body>
     <form id="form1" runat="server" novalidate="novalidate"
-       onsubmit="return false;" >
+        onsubmit="return false;">
         <div class="container">
             <div class="row">
                 <div class="col-md-3">
@@ -31,7 +29,7 @@
                 </div>
                 <div class="col-md-3">
                     <button id="agregarCliente" class="btn btn-primary"
-                         onclick="LanzarModal();">
+                        onclick="LanzarModal();">
                         Agregar
                     </button>
                 </div>
@@ -45,6 +43,8 @@
                                 <td>Nombre</td>
                                 <td>Telefono</td>
                                 <td>Domicilio</td>
+                                <td>Editar</td>
+                                <td>Eliminar</td>
                             </tr>
                         </thead>
                         <tbody id="listadoClientes">
@@ -66,38 +66,61 @@
                             <div class="col-md-12">
                                 <label>Nombre del Cliente</label>
                                 <input id="ClienteNombre" type="text"
-                                    class="form-control" required/>
-                            </div>
-                        </div>
-                         <div class="row">
-                             <div class="col-md-12">
-                                <label>Teléfono del Cliente</label>
-                                <input id="ClienteTelefono" type="text"
-                                    class="form-control" required/>
+                                    class="form-control" required />
                             </div>
                         </div>
                         <div class="row">
-                             <div class="col-md-12">
+                            <div class="col-md-12">
+                                <label>Teléfono del Cliente</label>
+                                <input id="ClienteTelefono" type="text"
+                                    class="form-control" required />
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-12">
                                 <label>Dirección del Cliente</label>
                                 <input id="ClienteDireccion" type="text"
-                                    class="form-control" required/>
+                                    class="form-control" required />
                             </div>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
-                        <button type="button" 
-                            onclick="GuardarCliente();" 
-                            class="btn btn-primary">Guardar</button>
+                        <button id="btnGuardar" type="button"
+                            onclick="GuardarCliente();"
+                            class="btn btn-primary">
+                            Guardar</button>
+                         <button id="btnActualizar" type="button"
+                            onclick="ActualizarCliente();"
+                            class="btn btn-primary">
+                            Actualizar</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="ConfimarEliminar" class="modal" tabindex="-1">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Confirmación de Eliminar</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>¿Esta seguro que desea eliminar el registro?</p>
+                        <p id="ClienteAEliminar"></p>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">No</button>
+                        <button type="button" onclick="Eliminar();" class="btn btn-primary">Si</button>
                     </div>
                 </div>
             </div>
         </div>
     </form>
     <script>
-
-
         var uri = "api/Clientes";
+        var clienteSeleccionado;
 
         $(function () {
             console.log("página cargada completamente");
@@ -112,10 +135,18 @@
                     let row = "<td>" + value.ClienteId + "</td>" +
                         "<td>" + value.ClienteNombre + "</td>" +
                         "<td>" + value.ClienteTelefono + "</td>" +
-                        "<td>" + value.ClienteDireccion + "</td>";
+                        "<td>" + value.ClienteDireccion + "</td>" +
+                        "<td><button class='btn btn-info'" +
+                        "onclick=LanzarEdicion(" + value.ClienteId + ");"
+                        +">" +
+                        "Editar</button></td>" +
+                        "<td> <button class='btn btn-danger'" +
+                        "onclick='LanzarEliminar(" + value.ClienteId +
+                        "," + "\"" + value.ClienteNombre + "\""+
+                        ");'>" +
+                        "Eliminar </button> </td>";
                     $('<tr/>', { html: row }).appendTo($("#listadoClientes"));
                 });
-
                 console.log("llamada exitosa");
             }).fail(function () {
                 console.log("error al llamar el controlador");
@@ -124,7 +155,56 @@
             });
         }
 
+        function LanzarEdicion(clienteId) {
+            $("#btnGuardar").hide();
+            $("#btnActualizar").show();
+            ConsultarCliente(clienteId);
+            $("#ClienteModal").modal('show');
+        }
+
+        function ConsultarCliente(clienteId) {
+            $.get(uri, { id: clienteId }, function (cliente) {
+                console.log("Se realizó la consulta correctamente");
+                CargarCliente(cliente);
+            });
+        }
+
+        function CargarCliente(cliente) {
+            $("#ClienteNombre").val(cliente.ClienteNombre);
+            $("#ClienteTelefono").val(cliente.ClienteTelefono);
+            $("#ClienteDireccion").val(cliente.ClienteDireccion);
+            clienteSeleccionado = cliente.ClienteId;
+        }
+
+        function LanzarEliminar(ClienteId, nombreCliente) {
+            clienteSeleccionado = ClienteId;
+            $("#ClienteAEliminar").text(nombreCliente);
+            $("#ConfimarEliminar").modal('show');
+        }
+
+        function Eliminar() {
+            $("#ConfimarEliminar").modal('hide');
+            EliminarCliente(clienteSeleccionado);
+        }
+
+        function EliminarCliente(ClienteId) {
+            $.ajax({
+                url: uri + "?ClienteId=" + ClienteId,
+                type: "DELETE",
+                dataType: "json",
+                success: function (data, textStatus, xhr) {
+                    console.log("El cliente se elimino exitosamente");
+                    DevolverClientes();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("Ha ocurrido un error en el eliminado del cliente");
+                },
+            });
+        }
+
         function LanzarModal() {
+            $("#btnGuardar").show();
+            $("#btnActualizar").hide();
             $("#ClienteModal").modal('show');
         }
 
@@ -144,6 +224,25 @@
                 }
             });
             $("#ClienteModal").modal('hide');
+        }
+
+        function ActualizarCliente() {
+            var cliente = ObtenerCliente();
+            cliente.ClienteId = clienteSeleccionado;
+            $.ajax({
+                url: uri,
+                type: 'PUT',
+                dataType: 'json',
+                data: cliente,
+                success: function (data, textStatus, xhr) {
+                    console.log("El cliente se actualizó exitosamente");
+                    DevolverClientes();
+                },
+                error: function (xhr, textStatus, errorThrown) {
+                    console.log("Ha ocurrido un error en la actualizada del cliente");
+                }
+            });
+            $('#ClienteModal').modal('hide');
         }
 
         function ObtenerCliente() {

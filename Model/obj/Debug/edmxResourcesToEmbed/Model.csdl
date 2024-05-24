@@ -11,5 +11,14 @@
   </EntityType>
   <EntityContainer Name="DemoEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="Clientes" EntityType="Self.Clientes" />
+    <EntitySet Name="Usuarios" EntityType="DemoModel.Usuarios" />
   </EntityContainer>
+  <EntityType Name="Usuarios">
+    <Key>
+      <PropertyRef Name="UsuarioId" />
+    </Key>
+    <Property Name="UsuarioId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="UsuarioNombre" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="UsuarioContraseña" Type="String" MaxLength="50" FixedLength="false" Unicode="true" />
+  </EntityType>
 </Schema>
