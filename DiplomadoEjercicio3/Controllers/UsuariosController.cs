@@ -35,8 +35,16 @@ namespace DiplomadoEjercicio3.Controllers
         // POST api/<controller>
         public void Post(Usuarios value)
         {
-            contexto.Usuarios.Add(value);
-            contexto.SaveChanges();
+            //Any
+            //Válida que no exista el nombre de usuario
+            //a insertar
+            if (!contexto.Usuarios.
+                Any(x=>x.UsuarioNombre==value.UsuarioNombre))
+            {
+                contexto.Usuarios.Add(value);
+                contexto.SaveChanges();
+            }
+           
         }
 
         // PUT api/<controller>/5
